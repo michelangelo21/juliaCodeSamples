@@ -1,0 +1,2875 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" type="text/css" href="statprofiler.css">
+
+    <title>StatProfilerHTML.jl: /usr/bin/../share/julia/base/./div.jl</title>
+  </head>
+  <body>
+<div class="report-header">
+  <div class="backlink"><a href="index.html">Report index</a></div>
+  <div class="report-title">StatProfilerHTML.jl report</div>
+  <div class="generated-on">Generated on sob, 23 sty 2021, 21:42:49</div>
+</div>
+
+    <div id="body-content">
+      <table>
+        <caption>File source code</caption>
+        <tr>
+          <th>Line</td>
+          <th>Exclusive</th>
+          <th>Inclusive</th>
+          <th>Code</th>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-1"></a>1</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code"># This file is a part of Julia. License is MIT: https://julialang.org/license
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-2"></a>2</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-3"></a>3</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code"># Div is truncating by default
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-4"></a>4</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-5"></a>5</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-6"></a>6</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    div(x, y, r::RoundingMode=RoundToZero)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-7"></a>7</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-8"></a>8</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">The quotient from Euclidean division. Computes x/y, rounded to an integer according
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-9"></a>9</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">to the rounding mode `r`. In other words, the quantity
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-10"></a>10</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-11"></a>11</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    round(x/y,r)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-12"></a>12</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-13"></a>13</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">without any intermediate rounding.
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-14"></a>14</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-15"></a>15</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">See also: [`fld`](@ref), [`cld`](@ref) which are special cases of this function
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-16"></a>16</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-17"></a>17</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code"># Examples:
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-18"></a>18</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">```jldoctest
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-19"></a>19</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">julia&gt; div(4, 3, RoundDown) # Matches fld(4, 3)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-20"></a>20</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">1
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-21"></a>21</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">julia&gt; div(4, 3, RoundUp) # Matches cld(4, 3)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-22"></a>22</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">2
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-23"></a>23</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">julia&gt; div(5, 2, RoundNearest)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-24"></a>24</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">2
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-25"></a>25</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">julia&gt; div(5, 2, RoundNearestTiesAway)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-26"></a>26</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">3
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-27"></a>27</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">julia&gt; div(-5, 2, RoundNearest)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-28"></a>28</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">-2
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-29"></a>29</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">julia&gt; div(-5, 2, RoundNearestTiesAway)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-30"></a>30</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">-3
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-31"></a>31</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">julia&gt; div(-5, 2, RoundNearestTiesUp)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-32"></a>32</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">-2
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-33"></a>33</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">```
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-34"></a>34</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-35"></a>35</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">div(x, y, r::RoundingMode)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-36"></a>36</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-37"></a>37</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">div(a, b) = div(a, b, RoundToZero)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-38"></a>38</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-39"></a>39</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-40"></a>40</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    rem(x, y, r::RoundingMode=RoundToZero)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-41"></a>41</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-42"></a>42</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">Compute the remainder of `x` after integer division by `y`, with the quotient rounded
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-43"></a>43</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">according to the rounding mode `r`. In other words, the quantity
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-44"></a>44</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-45"></a>45</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    x - y*round(x/y,r)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-46"></a>46</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-47"></a>47</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">without any intermediate rounding.
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-48"></a>48</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-49"></a>49</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">- if `r == RoundNearest`, then the result is exact, and in the interval
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-50"></a>50</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">  ``[-|y|/2, |y|/2]``. See also [`RoundNearest`](@ref).
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-51"></a>51</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-52"></a>52</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">- if `r == RoundToZero` (default), then the result is exact, and in the interval
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-53"></a>53</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">  ``[0, |y|)`` if `x` is positive, or ``(-|y|, 0]`` otherwise. See also [`RoundToZero`](@ref).
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-54"></a>54</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-55"></a>55</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">- if `r == RoundDown`, then the result is in the interval ``[0, y)`` if `y` is positive, or
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-56"></a>56</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">  ``(y, 0]`` otherwise. The result may not be exact if `x` and `y` have different signs, and
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-57"></a>57</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">  `abs(x) &lt; abs(y)`. See also [`RoundDown`](@ref).
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-58"></a>58</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-59"></a>59</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">- if `r == RoundUp`, then the result is in the interval `(-y,0]` if `y` is positive, or
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-60"></a>60</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">  `[0,-y)` otherwise. The result may not be exact if `x` and `y` have the same sign, and
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-61"></a>61</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">  `abs(x) &lt; abs(y)`. See also [`RoundUp`](@ref).
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-62"></a>62</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-63"></a>63</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-64"></a>64</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">rem(x, y, r::RoundingMode)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-65"></a>65</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-66"></a>66</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code"># TODO: Make these primitive and have the two-argument version call these
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-67"></a>67</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">rem(x, y, ::RoundingMode{:ToZero}) = rem(x, y)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-68"></a>68</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">rem(x, y, ::RoundingMode{:Down}) = mod(x, y)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-69"></a>69</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">rem(x, y, ::RoundingMode{:Up}) = mod(x, -y)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-70"></a>70</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">rem(x, y, r::RoundingMode{:Nearest}) = x - y*div(x, y, r)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-71"></a>71</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">rem(x::Integer, y::Integer, r::RoundingMode{:Nearest}) = divrem(x, y, r)[2]
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-72"></a>72</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-73"></a>73</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-74"></a>74</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    fld(x, y)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-75"></a>75</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-76"></a>76</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">Largest integer less than or equal to `x/y`. Equivalent to `div(x, y, RoundDown)`.
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-77"></a>77</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-78"></a>78</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">See also: [`div`](@ref)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-79"></a>79</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-80"></a>80</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code"># Examples
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-81"></a>81</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">```jldoctest
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-82"></a>82</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">julia&gt; fld(7.3,5.5)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-83"></a>83</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">1.0
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-84"></a>84</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">```
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-85"></a>85</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-86"></a>86</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">fld(a, b) = div(a, b, RoundDown)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-87"></a>87</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-88"></a>88</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-89"></a>89</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    cld(x, y)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-90"></a>90</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-91"></a>91</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">Smallest integer larger than or equal to `x/y`. Equivalent to `div(x, y, RoundUp)`.
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-92"></a>92</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-93"></a>93</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">See also: [`div`](@ref)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-94"></a>94</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-95"></a>95</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code"># Examples
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-96"></a>96</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">```jldoctest
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-97"></a>97</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">julia&gt; cld(5.5,2.2)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-98"></a>98</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">3.0
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-99"></a>99</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">```
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-100"></a>100</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-101"></a>101</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">cld(a, b) = div(a, b, RoundUp)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-102"></a>102</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-103"></a>103</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code"># divrem
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-104"></a>104</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-105"></a>105</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    divrem(x, y, r::RoundingMode=RoundToZero)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-106"></a>106</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-107"></a>107</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">The quotient and remainder from Euclidean division.
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-108"></a>108</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">Equivalent to `(div(x,y,r), rem(x,y,r))`. Equivalently, with the default
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-109"></a>109</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">value of `r`, this call is equivalent to `(x÷y, x%y)`.
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-110"></a>110</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-111"></a>111</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code"># Examples
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-112"></a>112</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">```jldoctest
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-113"></a>113</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">julia&gt; divrem(3,7)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-114"></a>114</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">(0, 3)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-115"></a>115</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-116"></a>116</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">julia&gt; divrem(7,3)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-117"></a>117</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">(2, 1)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-118"></a>118</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">```
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-119"></a>119</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-120"></a>120</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">divrem(x, y) = divrem(x, y, RoundToZero)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-121"></a>121</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">function divrem(a, b, r::RoundingMode)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-122"></a>122</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    if r === RoundToZero
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-123"></a>123</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        # For compat. Remove in 2.0.
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-124"></a>124</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        (div(a, b), rem(a, b))
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-125"></a>125</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    elseif r === RoundDown
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-126"></a>126</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        # For compat. Remove in 2.0.
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-127"></a>127</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        (fld(a, b), mod(a, b))
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-128"></a>128</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    else
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-129"></a>129</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        (div(a, b, r), rem(a, b, r))
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-130"></a>130</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-131"></a>131</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-132"></a>132</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">function divrem(x::Integer, y::Integer, rnd::typeof(RoundNearest))
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-133"></a>133</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    (q, r) = divrem(x, y)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-134"></a>134</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    if x &gt;= 0
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-135"></a>135</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        if y &gt;= 0
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-136"></a>136</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            r &gt;=        (y÷2) + (isodd(y) | iseven(q)) ? (q+true, r-y) : (q, r)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-137"></a>137</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        else
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-138"></a>138</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            r &gt;=       -(y÷2) + (isodd(y) | iseven(q)) ? (q-true, r+y) : (q, r)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-139"></a>139</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-140"></a>140</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    else
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-141"></a>141</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        if y &gt;= 0
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-142"></a>142</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            r &lt;= -signed(y÷2) - (isodd(y) | iseven(q)) ? (q-true, r+y) : (q, r)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-143"></a>143</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        else
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-144"></a>144</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            r &lt;=        (y÷2) - (isodd(y) | iseven(q)) ? (q+true, r-y) : (q, r)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-145"></a>145</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-146"></a>146</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-147"></a>147</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-148"></a>148</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">function divrem(x::Integer, y::Integer, rnd:: typeof(RoundNearestTiesAway))
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-149"></a>149</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    (q, r) = divrem(x, y)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-150"></a>150</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    if x &gt;= 0
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-151"></a>151</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        if y &gt;= 0
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-152"></a>152</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            r &gt;=        (y÷2) + isodd(y) ? (q+true, r-y) : (q, r)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-153"></a>153</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        else
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-154"></a>154</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            r &gt;=       -(y÷2) + isodd(y) ? (q-true, r+y) : (q, r)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-155"></a>155</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-156"></a>156</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    else
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-157"></a>157</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        if y &gt;= 0
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-158"></a>158</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            r &lt;= -signed(y÷2) - isodd(y) ? (q-true, r+y) : (q, r)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-159"></a>159</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        else
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-160"></a>160</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            r &lt;=        (y÷2) - isodd(y) ? (q+true, r-y) : (q, r)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-161"></a>161</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-162"></a>162</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-163"></a>163</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-164"></a>164</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">function divrem(x::Integer, y::Integer, rnd::typeof(RoundNearestTiesUp))
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-165"></a>165</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    (q, r) = divrem(x, y)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-166"></a>166</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    if x &gt;= 0
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-167"></a>167</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        if y &gt;= 0
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-168"></a>168</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            r &gt;=        (y÷2) + isodd(y) ? (q+true, r-y) : (q, r)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-169"></a>169</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        else
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-170"></a>170</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            r &gt;=       -(y÷2) + true     ? (q-true, r+y) : (q, r)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-171"></a>171</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-172"></a>172</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    else
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-173"></a>173</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        if y &gt;= 0
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-174"></a>174</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            r &lt;= -signed(y÷2) - true     ? (q-true, r+y) : (q, r)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-175"></a>175</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        else
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-176"></a>176</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            r &lt;=        (y÷2) - isodd(y) ? (q+true, r-y) : (q, r)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-177"></a>177</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-178"></a>178</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-179"></a>179</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-180"></a>180</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-181"></a>181</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-182"></a>182</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    fldmod(x, y)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-183"></a>183</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-184"></a>184</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">The floored quotient and modulus after division. A convenience wrapper for
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-185"></a>185</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">`divrem(x, y, RoundDown)`. Equivalent to `(fld(x,y), mod(x,y))`.
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-186"></a>186</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-187"></a>187</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">fldmod(x,y) = divrem(x, y, RoundDown)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-188"></a>188</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-189"></a>189</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code"># We definite generic rounding methods for other rounding modes in terms of
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-190"></a>190</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code"># RoundToZero.
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-191"></a>191</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">function div(x::Signed, y::Unsigned, ::typeof(RoundDown))
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-192"></a>192</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    (q, r) = divrem(x, y)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-193"></a>193</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    q - (signbit(x) &amp; (r != 0))
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-194"></a>194</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-195"></a>195</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">function div(x::Unsigned, y::Signed, ::typeof(RoundDown))
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-196"></a>196</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    (q, r) = divrem(x, y)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-197"></a>197</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    q - (signbit(y) &amp; (r != 0))
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-198"></a>198</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-199"></a>199</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-200"></a>200</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">function div(x::Signed, y::Unsigned, ::typeof(RoundUp))
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-201"></a>201</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    (q, r) = divrem(x, y)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-202"></a>202</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    q + (!signbit(x) &amp; (r != 0))
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-203"></a>203</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-204"></a>204</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">function div(x::Unsigned, y::Signed, ::typeof(RoundUp))
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-205"></a>205</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    (q, r) = divrem(x, y)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-206"></a>206</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    q + (!signbit(y) &amp; (r != 0))
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-207"></a>207</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-208"></a>208</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-209"></a>209</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">function div(x::Integer, y::Integer, rnd::Union{typeof(RoundNearest),
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-210"></a>210</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                                              typeof(RoundNearestTiesAway),
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-211"></a>211</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                                              typeof(RoundNearestTiesUp)})
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-212"></a>212</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    divrem(x, y, rnd)[1]
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-213"></a>213</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-214"></a>214</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-215"></a>215</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code"># For bootstrapping purposes, we define div for integers directly. Provide the
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-216"></a>216</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code"># generic signature also
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-217"></a>217</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">div(a::T, b::T, ::typeof(RoundToZero)) where {T&lt;:Union{BitSigned, BitUnsigned64}} = div(a, b)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-218"></a>218</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">div(a::Bool, b::Bool, r::RoundingMode) = div(a, b)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-219"></a>219</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code"># Prevent ambiguities
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-220"></a>220</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">for rm in (RoundUp, RoundDown, RoundToZero)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-221"></a>221</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    @eval div(a::Bool, b::Bool, r::$(typeof(rm))) = div(a, b)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-222"></a>222</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-223"></a>223</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">function div(x::Bool, y::Bool, rnd::Union{typeof(RoundNearest),
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-224"></a>224</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                                        typeof(RoundNearestTiesAway),
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-225"></a>225</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                                        typeof(RoundNearestTiesUp)})
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-226"></a>226</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    div(x, y)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-227"></a>227</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-228"></a>228</td>
+          <td></td>
+          <td>2063 (5.55%)</td>
+          <td>
+            <div class="call-sites">
+              <a name="S-usr-bin-share-julia-base-div-jl-fld-228"></a>
+              2063 (5.55%) samples spent in fld<br />
+              0 (ex.),
+              2063 (100.00%) (incl.)
+              when called from
+              mod
+              <a href="int-jl-0521d537bb0e89f7f931-line.html#Lint-jl-0521d537bb0e89f7f931-line.html-252">line 252</a><br />
+            </div>
+            <div class="callees">
+              2063 (100.00%)
+              samples spent calling
+              <a href="div-jl-4ea062f1f895ba18364f-line.html#S-usr-bin-share-julia-base-div-jl-div-263">div</a><br />
+            </div>
+            <span class="code">fld(a::T, b::T) where {T&lt;:Union{Integer,AbstractFloat}} = div(a, b, RoundDown)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-229"></a>229</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">cld(a::T, b::T) where {T&lt;:Union{Integer,AbstractFloat}} = div(a, b, RoundUp)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-230"></a>230</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">div(a::Int128, b::Int128, ::typeof(RoundToZero)) = div(a, b)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-231"></a>231</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">div(a::UInt128, b::UInt128, ::typeof(RoundToZero)) = div(a, b)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-232"></a>232</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">rem(a::Int128, b::Int128, ::typeof(RoundToZero)) = rem(a, b)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-233"></a>233</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">rem(a::UInt128, b::UInt128, ::typeof(RoundToZero)) = rem(a, b)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-234"></a>234</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-235"></a>235</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code"># These are kept for compatibility with external packages overriding fld/cld.
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-236"></a>236</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code"># In 2.0, packages should extend div(a,b,r) instead, in which case, these can
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-237"></a>237</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code"># be removed.
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-238"></a>238</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">fld(x::Real, y::Real) = div(promote(x,y)..., RoundDown)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-239"></a>239</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">cld(x::Real, y::Real) = div(promote(x,y)..., RoundUp)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-240"></a>240</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">fld(x::Signed, y::Unsigned) = div(x, y, RoundDown)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-241"></a>241</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">fld(x::Unsigned, y::Signed) = div(x, y, RoundDown)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-242"></a>242</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">cld(x::Signed, y::Unsigned) = div(x, y, RoundUp)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-243"></a>243</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">cld(x::Unsigned, y::Signed) = div(x, y, RoundUp)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-244"></a>244</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">fld(x::T, y::T) where {T&lt;:Real} = throw(MethodError(div, (x, y, RoundDown)))
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-245"></a>245</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">cld(x::T, y::T) where {T&lt;:Real} = throw(MethodError(div, (x, y, RoundUp)))
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-246"></a>246</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-247"></a>247</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code"># Promotion
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-248"></a>248</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">function div(x::Real, y::Real, r::RoundingMode)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-249"></a>249</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    typeof(x) === typeof(y) &amp;&amp; throw(MethodError(div, (x, y, r)))
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-250"></a>250</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    if r === RoundToZero
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-251"></a>251</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        # For compat. Remove in 2.0.
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-252"></a>252</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        div(promote(x, y)...)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-253"></a>253</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    else
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-254"></a>254</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        div(promote(x, y)..., r)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-255"></a>255</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-256"></a>256</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-257"></a>257</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-258"></a>258</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code"># Integers
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-259"></a>259</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code"># fld(x,y) == div(x,y) - ((x&gt;=0) != (y&gt;=0) &amp;&amp; rem(x,y) != 0 ? 1 : 0)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-260"></a>260</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">div(x::T, y::T, ::typeof(RoundDown)) where {T&lt;:Unsigned} = div(x,y)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-261"></a>261</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">function div(x::T, y::T, ::typeof(RoundDown)) where T&lt;:Integer
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-262"></a>262</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    d = div(x, y, RoundToZero)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-263"></a>263</td>
+          <td></td>
+          <td>2063 (5.55%)</td>
+          <td>
+            <div class="call-sites">
+              <a name="S-usr-bin-share-julia-base-div-jl-div-263"></a>
+              2063 (5.55%) samples spent in div<br />
+              0 (ex.),
+              2063 (100.00%) (incl.)
+              when called from
+              fld
+              <a href="div-jl-4ea062f1f895ba18364f-line.html#Ldiv-jl-4ea062f1f895ba18364f-line.html-228">line 228</a><br />
+            </div>
+            <div class="callees">
+              159 (7.71%)
+              samples spent calling
+              <a href="int-jl-0521d537bb0e89f7f931-line.html#S-usr-bin-share-julia-base-int-jl-">&amp;</a><br />
+              348 (16.87%)
+              samples spent calling
+              <a href="bool-jl-d2014390ce4ff7312cdf-line.html#S-usr-bin-share-julia-base-bool-jl-40">&amp;</a><br />
+              31 (1.50%)
+              samples spent calling
+              <a href="array-jl-0ba5e5c50aca3cb8734a-line.html#S-usr-bin-share-julia-base-array-jl-xor">xor</a><br />
+              108 (5.24%)
+              samples spent calling
+              <a href="int-jl-0521d537bb0e89f7f931-line.html#S-usr-bin-share-julia-base-int-jl-920">-</a><br />
+              191 (9.26%)
+              samples spent calling
+              <a href="int-jl-0521d537bb0e89f7f931-line.html#S-usr-bin-share-julia-base-int-jl-922">-</a><br />
+              207 (10.03%)
+              samples spent calling
+              <a href="int-jl-0521d537bb0e89f7f931-line.html#S-usr-bin-share-julia-base-int-jl-87">*</a><br />
+              1019 (49.39%)
+              samples spent calling
+              <a href="operators-jl-317701157f9cc679b383-line.html#S-usr-bin-share-julia-base-operators-jl-202">!=</a><br />
+            </div>
+            <span class="code">    return d - (signbit(x ⊻ y) &amp; (d * y != x))
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-264"></a>264</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-265"></a>265</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-266"></a>266</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code"># cld(x,y) = div(x,y) + ((x&gt;0) == (y&gt;0) &amp;&amp; rem(x,y) != 0 ? 1 : 0)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-267"></a>267</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">function div(x::T, y::T, ::typeof(RoundUp)) where T&lt;:Unsigned
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-268"></a>268</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    d = div(x, y, RoundToZero)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-269"></a>269</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    return d + (d * y != x)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-270"></a>270</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-271"></a>271</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">function div(x::T, y::T, ::typeof(RoundUp)) where T&lt;:Integer
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-272"></a>272</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    d = div(x, y, RoundToZero)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-273"></a>273</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    return d + (((x &gt; 0) == (y &gt; 0)) &amp; (d * y != x))
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-274"></a>274</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-275"></a>275</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-276"></a>276</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code"># Real
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-277"></a>277</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code"># NOTE: C89 fmod() and x87 FPREM implicitly provide truncating float division,
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-278"></a>278</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code"># so it is used here as the basis of float div().
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-279"></a>279</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">div(x::T, y::T, r::RoundingMode) where {T&lt;:AbstractFloat} = convert(T,round((x-rem(x,y,r))/y))
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ldiv-jl-4ea062f1f895ba18364f-line.html-280"></a>280</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">rem(x::T, y::T, ::typeof(RoundUp)) where {T&lt;:AbstractFloat} = convert(T,x-y*ceil(x/y))
+</span>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </body>
+</html>

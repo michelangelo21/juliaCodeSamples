@@ -1,0 +1,121 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8}]
+\PYG{k}{using} \PYG{n}{Statistics}
+\PYG{k}{using} \PYG{n}{OffsetArrays}
+\PYG{k}{using} \PYG{n}{JLD2}
+\PYG{k}{using} \PYG{n}{Plots}
+\PYG{n}{pgfplotsx}\PYG{p}{(}\PYG{p}{)}
+
+\PYG{k+kd}{const} \PYG{n}{L} \PYG{o}{=} \PYG{l+m+mi}{20}
+\PYG{n}{MCS} \PYG{o}{=} \PYG{l+m+mi}{230\PYGZus{}000}
+
+\PYG{k+kd}{const} \PYG{n}{Δϕ} \PYG{o}{=} \PYG{l+m+mi}{10} \PYG{c}{\PYGZsh{}°}
+\PYG{c}{\PYGZsh{} const T = 2}
+\PYG{k+kd}{const} \PYG{n}{ξ} \PYG{o}{=} \PYG{l+m+mf}{20.0}
+\PYG{k+kd}{const} \PYG{n}{n₀} \PYG{o}{=} \PYG{l+m+mf}{1.5}
+\PYG{k+kd}{const} \PYG{n}{nₑ} \PYG{o}{=} \PYG{l+m+mf}{1.7}
+
+\PYG{k+kd}{const} \PYG{n}{P\PYGZus{}func}\PYG{p}{(}\PYG{n}{β}\PYG{p}{)} \PYG{o}{=} \PYG{p}{(}\PYG{l+m+mi}{3} \PYG{o}{*} \PYG{n}{cosd}\PYG{p}{(}\PYG{n}{β}\PYG{p}{)}\PYG{o}{\PYGZca{}}\PYG{l+m+mi}{2} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{)}\PYG{o}{/}\PYG{l+m+mi}{2}
+\PYG{k+kd}{const} \PYG{n}{P₂} \PYG{o}{=} \PYG{n}{OffsetArray}\PYG{p}{(}\PYG{n}{map}\PYG{p}{(}\PYG{n}{P\PYGZus{}func}\PYG{p}{,} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{180}\PYG{o}{:}\PYG{l+m+mi}{180}\PYG{p}{)}\PYG{p}{,} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{180}\PYG{o}{:}\PYG{l+m+mi}{180}\PYG{p}{)}
+\PYG{n}{Iₙ} \PYG{o}{=} \PYG{n}{collect}\PYG{p}{(}\PYG{l+m+mi}{2}\PYG{o}{:}\PYG{n}{L}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{)}
+\PYG{n}{Iₚ} \PYG{o}{=} \PYG{n}{collect}\PYG{p}{(}\PYG{l+m+mi}{0}\PYG{o}{:}\PYG{n}{L}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{)}
+\PYG{n}{Iₙ}\PYG{p}{[}\PYG{l+m+mi}{20}\PYG{p}{]} \PYG{o}{=} \PYG{l+m+mi}{1}
+\PYG{n}{Iₚ}\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{]} \PYG{o}{=} \PYG{n}{L}
+
+\PYG{k+kd}{const} \PYG{n}{randoms\PYGZus{}Δϕ} \PYG{o}{=} \PYG{k+kt}{Int16}\PYG{o}{.}\PYG{p}{(}\PYG{n}{cat}\PYG{p}{(}\PYG{o}{\PYGZhy{}}\PYG{n}{Δϕ÷2}\PYG{o}{:}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{,} \PYG{l+m+mi}{1}\PYG{o}{:}\PYG{n}{Δϕ÷2}\PYG{p}{,} \PYG{n}{dims}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{)}\PYG{p}{)}
+
+\PYG{n}{n\PYGZus{}eff}\PYG{p}{(}\PYG{n+nb}{φ}\PYG{o}{::}\PYG{k+kt}{Number}\PYG{p}{,} \PYG{n}{n₀} \PYG{o}{=} \PYG{n}{n₀}\PYG{p}{,} \PYG{n}{nₑ} \PYG{o}{=} \PYG{n}{nₑ}\PYG{p}{)}\PYG{o}{::}\PYG{k+kt}{Float64} \PYG{o}{=} \PYG{n}{n₀} \PYG{o}{*} \PYG{n}{nₑ} \PYG{o}{/} \PYG{o}{√}\PYG{p}{(}\PYG{n}{n₀}\PYG{o}{\PYGZca{}}\PYG{l+m+mi}{2}\PYG{o}{*}\PYG{n}{cosd}\PYG{p}{(}\PYG{n+nb}{φ}\PYG{p}{)}\PYG{o}{\PYGZca{}}\PYG{l+m+mi}{2} \PYG{o}{+} \PYG{n}{nₑ}\PYG{o}{\PYGZca{}}\PYG{l+m+mi}{2}\PYG{o}{*}\PYG{n}{sind}\PYG{p}{(}\PYG{n+nb}{φ}\PYG{p}{)}\PYG{o}{\PYGZca{}}\PYG{l+m+mi}{2}\PYG{p}{)}
+
+\PYG{k}{function} \PYG{n}{nlc}\PYG{p}{(}\PYG{n}{E}\PYG{o}{::}\PYG{k+kt}{Number}\PYG{p}{,} \PYG{n}{MCS}\PYG{o}{::}\PYG{k+kt}{Integer}\PYG{o}{=}\PYG{l+m+mi}{230\PYGZus{}000}\PYG{p}{,} \PYG{n}{L}\PYG{o}{::}\PYG{k+kt}{Integer}\PYG{o}{=}\PYG{l+m+mi}{20}\PYG{p}{,} \PYG{n}{skipfirst}\PYG{o}{::}\PYG{k+kt}{Integer}\PYG{o}{=}\PYG{l+m+mi}{30\PYGZus{}000}\PYG{p}{,} \PYG{n}{probe\PYGZus{}every}\PYG{o}{::}\PYG{k+kt}{Integer}\PYG{o}{=}\PYG{l+m+mi}{100}\PYG{p}{,} \PYG{n}{P₂}\PYG{o}{=}\PYG{n}{P₂}\PYG{p}{,} \PYG{n}{Iₙ}\PYG{o}{=}\PYG{n}{Iₙ}\PYG{p}{,} \PYG{n}{Iₚ}\PYG{o}{=}\PYG{n}{Iₚ}\PYG{p}{,} \PYG{n}{ξ}\PYG{o}{=}\PYG{n}{ξ}\PYG{p}{,} \PYG{n}{randoms\PYGZus{}Δϕ}\PYG{o}{=}\PYG{n}{randoms\PYGZus{}Δϕ}\PYG{p}{)}\PYG{o}{::}\PYG{k+kt}{Float64}
+    \PYG{c}{\PYGZsh{}ordered initial conditions \PYGZhy{} all ϕ=0°}
+    \PYG{n}{ϕ} \PYG{o}{=} \PYG{n}{zeros}\PYG{p}{(}\PYG{k+kt}{Int16}\PYG{p}{,}\PYG{n}{L}\PYG{p}{,}\PYG{n}{L}\PYG{p}{)}
+    \PYG{n}{n\PYGZus{}eff\PYGZus{}sum} \PYG{o}{=} \PYG{l+m+mf}{0.0}
+
+    \PYG{k}{for} \PYG{n}{k} \PYG{o}{∈} \PYG{l+m+mi}{1}\PYG{o}{:}\PYG{n}{MCS}
+        \PYG{k}{for} \PYG{n}{j} \PYG{o}{∈} \PYG{l+m+mi}{1}\PYG{o}{:}\PYG{n}{L}\PYG{p}{,} \PYG{n}{i} \PYG{o}{∈} \PYG{l+m+mi}{2}\PYG{o}{:}\PYG{n}{L}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}
+            \PYG{c}{\PYGZsh{}metropolis algorithm}
+            \PYG{n+nd}{@inbounds} \PYG{n}{ϕ\PYGZus{}new}\PYG{o}{::}\PYG{k+kt}{Int16} \PYG{o}{=} \PYG{n}{ϕ}\PYG{p}{[}\PYG{n}{i}\PYG{p}{,}\PYG{n}{j}\PYG{p}{]} \PYG{o}{+} \PYG{n}{rand}\PYG{p}{(}\PYG{n}{randoms\PYGZus{}Δϕ}\PYG{p}{)}
+            \PYG{n}{ϕ\PYGZus{}new} \PYG{o}{\PYGZgt{}} \PYG{l+m+mi}{90}  \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{p}{(}\PYG{n}{ϕ\PYGZus{}new} \PYG{o}{\PYGZhy{}=} \PYG{l+m+mi}{180}\PYG{p}{)} \PYG{c}{\PYGZsh{} a \PYGZam{}\PYGZam{} b  =\PYGZgt{} if a then run b}
+            \PYG{n}{ϕ\PYGZus{}new} \PYG{o}{\PYGZlt{}} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{90} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{p}{(}\PYG{n}{ϕ\PYGZus{}new} \PYG{o}{+=} \PYG{l+m+mi}{180}\PYG{p}{)}
+
+            \PYG{n+nd}{@inbounds} \PYG{n}{U\PYGZus{}old}\PYG{o}{::}\PYG{k+kt}{Float64} \PYG{o}{=} \PYG{o}{\PYGZhy{}}\PYG{n}{ξ} \PYG{o}{*} \PYG{p}{(}\PYG{n}{P₂}\PYG{p}{[}\PYG{n}{ϕ}\PYG{p}{[}\PYG{n}{i}\PYG{p}{,}\PYG{n}{j}\PYG{p}{]} \PYG{o}{\PYGZhy{}} \PYG{n}{ϕ}\PYG{p}{[}\PYG{n}{Iₙ}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{p}{,}\PYG{n}{j}\PYG{p}{]}\PYG{p}{]} \PYG{o}{+} \PYG{n}{P₂}\PYG{p}{[}\PYG{n}{ϕ}\PYG{p}{[}\PYG{n}{i}\PYG{p}{,}\PYG{n}{j}\PYG{p}{]} \PYG{o}{\PYGZhy{}} \PYG{n}{ϕ}\PYG{p}{[}\PYG{n}{Iₚ}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{p}{,}\PYG{n}{j}\PYG{p}{]}\PYG{p}{]} \PYG{o}{+} \PYG{n}{P₂}\PYG{p}{[}\PYG{n}{ϕ}\PYG{p}{[}\PYG{n}{i}\PYG{p}{,}\PYG{n}{j}\PYG{p}{]} \PYG{o}{\PYGZhy{}} \PYG{n}{ϕ}\PYG{p}{[}\PYG{n}{i}\PYG{p}{,}\PYG{n}{Iₙ}\PYG{p}{[}\PYG{n}{j}\PYG{p}{]}\PYG{p}{]}\PYG{p}{]} \PYG{o}{+} \PYG{n}{P₂}\PYG{p}{[}\PYG{n}{ϕ}\PYG{p}{[}\PYG{n}{i}\PYG{p}{,}\PYG{n}{j}\PYG{p}{]} \PYG{o}{\PYGZhy{}} \PYG{n}{ϕ}\PYG{p}{[}\PYG{n}{i}\PYG{p}{,}\PYG{n}{Iₚ}\PYG{p}{[}\PYG{n}{j}\PYG{p}{]}\PYG{p}{]}\PYG{p}{]}\PYG{p}{)} \PYG{o}{\PYGZhy{}} \PYG{n}{E}\PYG{o}{\PYGZca{}}\PYG{l+m+mi}{2} \PYG{o}{*} \PYG{n}{P₂}\PYG{p}{[}\PYG{l+m+mi}{90}\PYG{o}{\PYGZhy{}}\PYG{n}{ϕ}\PYG{p}{[}\PYG{n}{i}\PYG{p}{,}\PYG{n}{j}\PYG{p}{]}\PYG{p}{]}
+
+            \PYG{n+nd}{@inbounds} \PYG{n}{U\PYGZus{}new}\PYG{o}{::}\PYG{k+kt}{Float64} \PYG{o}{=} \PYG{o}{\PYGZhy{}}\PYG{n}{ξ} \PYG{o}{*} \PYG{p}{(}\PYG{n}{P₂}\PYG{p}{[}\PYG{n}{ϕ\PYGZus{}new} \PYG{o}{\PYGZhy{}} \PYG{n}{ϕ}\PYG{p}{[}\PYG{n}{Iₙ}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{p}{,}\PYG{n}{j}\PYG{p}{]}\PYG{p}{]} \PYG{o}{+} \PYG{n}{P₂}\PYG{p}{[}\PYG{n}{ϕ\PYGZus{}new} \PYG{o}{\PYGZhy{}} \PYG{n}{ϕ}\PYG{p}{[}\PYG{n}{Iₚ}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{p}{,}\PYG{n}{j}\PYG{p}{]}\PYG{p}{]} \PYG{o}{+} \PYG{n}{P₂}\PYG{p}{[}\PYG{n}{ϕ\PYGZus{}new} \PYG{o}{\PYGZhy{}} \PYG{n}{ϕ}\PYG{p}{[}\PYG{n}{i}\PYG{p}{,}\PYG{n}{Iₙ}\PYG{p}{[}\PYG{n}{j}\PYG{p}{]}\PYG{p}{]}\PYG{p}{]} \PYG{o}{+} \PYG{n}{P₂}\PYG{p}{[}\PYG{n}{ϕ\PYGZus{}new} \PYG{o}{\PYGZhy{}} \PYG{n}{ϕ}\PYG{p}{[}\PYG{n}{i}\PYG{p}{,}\PYG{n}{Iₚ}\PYG{p}{[}\PYG{n}{j}\PYG{p}{]}\PYG{p}{]}\PYG{p}{]}\PYG{p}{)} \PYG{o}{\PYGZhy{}} \PYG{n}{E}\PYG{o}{\PYGZca{}}\PYG{l+m+mi}{2} \PYG{o}{*} \PYG{n}{P₂}\PYG{p}{[}\PYG{l+m+mi}{90}\PYG{o}{\PYGZhy{}}\PYG{n}{ϕ\PYGZus{}new}\PYG{p}{]}
+
+            \PYG{n}{ΔU}\PYG{o}{::}\PYG{k+kt}{Float64} \PYG{o}{=} \PYG{n}{U\PYGZus{}new} \PYG{o}{\PYGZhy{}} \PYG{n}{U\PYGZus{}old}
+            \PYG{k}{if} \PYG{n}{ΔU} \PYG{o}{\PYGZlt{}} \PYG{l+m+mi}{0}  \PYG{n}{rand}\PYG{p}{(}\PYG{p}{)} \PYG{o}{≤} \PYG{n}{exp}\PYG{p}{(}\PYG{o}{\PYGZhy{}}\PYG{n}{ΔU}\PYG{p}{)}
+                \PYG{n+nd}{@inbounds} \PYG{n}{ϕ}\PYG{p}{[}\PYG{n}{i}\PYG{p}{,}\PYG{n}{j}\PYG{p}{]} \PYG{o}{=} \PYG{n}{ϕ\PYGZus{}new}
+            \PYG{k}{end}
+        \PYG{k}{end}
+        \PYG{k}{if} \PYG{n}{k} \PYG{o}{\PYGZgt{}} \PYG{n}{skipfirst} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{n}{k}\PYG{o}{\PYGZpc{}}\PYG{n}{probe\PYGZus{}every} \PYG{o}{==} \PYG{l+m+mi}{0}
+            \PYG{n}{n\PYGZus{}eff\PYGZus{}sum} \PYG{o}{+=} \PYG{n}{sum}\PYG{p}{(}\PYG{n}{n\PYGZus{}eff}\PYG{p}{,} \PYG{n}{ϕ}\PYG{p}{)}\PYG{o}{/}\PYG{n}{L}\PYG{o}{\PYGZca{}}\PYG{l+m+mi}{2}
+        \PYG{k}{end}
+    \PYG{k}{end}
+    \PYG{k}{return} \PYG{n}{n\PYGZus{}eff\PYGZus{}sum} \PYG{o}{/} \PYG{p}{(}\PYG{p}{(}\PYG{n}{MCS}\PYG{o}{\PYGZhy{}}\PYG{n}{skipfirst}\PYG{p}{)}\PYG{o}{÷}\PYG{n}{probe\PYGZus{}every}\PYG{p}{)} \PYG{c}{\PYGZsh{}return mean \PYGZlt{}n\PYGZus{}eff\PYGZgt{}}
+    \PYG{c}{\PYGZsh{}return ϕ}
+\PYG{k}{end}
+
+\PYG{k}{function} \PYG{n}{nlc\PYGZus{}cos2\PYGZus{}profile}\PYG{p}{(}\PYG{n}{E}\PYG{o}{::}\PYG{k+kt}{Number}\PYG{p}{,} \PYG{n}{MCS}\PYG{o}{::}\PYG{k+kt}{Integer}\PYG{o}{=}\PYG{l+m+mi}{230\PYGZus{}000}\PYG{p}{,} \PYG{n}{L}\PYG{o}{::}\PYG{k+kt}{Integer}\PYG{o}{=}\PYG{l+m+mi}{20}\PYG{p}{,} \PYG{n}{skipfirst}\PYG{o}{::}\PYG{k+kt}{Integer}\PYG{o}{=}\PYG{l+m+mi}{30\PYGZus{}000}\PYG{p}{,} \PYG{n}{probe\PYGZus{}every}\PYG{o}{::}\PYG{k+kt}{Integer}\PYG{o}{=}\PYG{l+m+mi}{100}\PYG{p}{,} \PYG{n}{P₂}\PYG{o}{=}\PYG{n}{P₂}\PYG{p}{,} \PYG{n}{Iₙ}\PYG{o}{=}\PYG{n}{Iₙ}\PYG{p}{,} \PYG{n}{Iₚ}\PYG{o}{=}\PYG{n}{Iₚ}\PYG{p}{,} \PYG{n}{ξ}\PYG{o}{=}\PYG{n}{ξ}\PYG{p}{,} \PYG{n}{randoms\PYGZus{}Δϕ}\PYG{o}{=}\PYG{n}{randoms\PYGZus{}Δϕ}\PYG{p}{)}\PYG{o}{::}\PYG{k+kt}{Array}\PYG{p}{\PYGZob{}}\PYG{k+kt}{Float64}\PYG{p}{\PYGZcb{}}
+    \PYG{c}{\PYGZsh{}ordered initial conditions \PYGZhy{} all ϕ=0°}
+    \PYG{n}{ϕ} \PYG{o}{=} \PYG{n}{zeros}\PYG{p}{(}\PYG{k+kt}{Int16}\PYG{p}{,}\PYG{n}{L}\PYG{p}{,}\PYG{n}{L}\PYG{p}{)}
+    \PYG{n}{cos2\PYGZus{}profile} \PYG{o}{=} \PYG{n}{zeros}\PYG{p}{(}\PYG{n}{L}\PYG{p}{)}
+
+    \PYG{k}{for} \PYG{n}{k} \PYG{o}{∈} \PYG{l+m+mi}{1}\PYG{o}{:}\PYG{n}{MCS}
+        \PYG{k}{for} \PYG{n}{j} \PYG{o}{∈} \PYG{l+m+mi}{1}\PYG{o}{:}\PYG{n}{L}\PYG{p}{,} \PYG{n}{i} \PYG{o}{∈} \PYG{l+m+mi}{2}\PYG{o}{:}\PYG{n}{L}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}
+            \PYG{c}{\PYGZsh{}metropolis algorithm}
+            \PYG{n+nd}{@inbounds} \PYG{n}{ϕ\PYGZus{}new}\PYG{o}{::}\PYG{k+kt}{Int16} \PYG{o}{=} \PYG{n}{ϕ}\PYG{p}{[}\PYG{n}{i}\PYG{p}{,}\PYG{n}{j}\PYG{p}{]} \PYG{o}{+} \PYG{n}{rand}\PYG{p}{(}\PYG{n}{randoms\PYGZus{}Δϕ}\PYG{p}{)}
+            \PYG{n}{ϕ\PYGZus{}new} \PYG{o}{\PYGZgt{}} \PYG{l+m+mi}{90}  \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{p}{(}\PYG{n}{ϕ\PYGZus{}new} \PYG{o}{\PYGZhy{}=} \PYG{l+m+mi}{180}\PYG{p}{)} \PYG{c}{\PYGZsh{} a \PYGZam{}\PYGZam{} b  =\PYGZgt{} if a then run b}
+            \PYG{n}{ϕ\PYGZus{}new} \PYG{o}{\PYGZlt{}} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{90} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{p}{(}\PYG{n}{ϕ\PYGZus{}new} \PYG{o}{+=} \PYG{l+m+mi}{180}\PYG{p}{)}
+
+            \PYG{n+nd}{@inbounds} \PYG{n}{U\PYGZus{}old}\PYG{o}{::}\PYG{k+kt}{Float64} \PYG{o}{=} \PYG{o}{\PYGZhy{}}\PYG{n}{ξ} \PYG{o}{*} \PYG{p}{(}\PYG{n}{P₂}\PYG{p}{[}\PYG{n}{ϕ}\PYG{p}{[}\PYG{n}{i}\PYG{p}{,}\PYG{n}{j}\PYG{p}{]} \PYG{o}{\PYGZhy{}} \PYG{n}{ϕ}\PYG{p}{[}\PYG{n}{Iₙ}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{p}{,}\PYG{n}{j}\PYG{p}{]}\PYG{p}{]} \PYG{o}{+} \PYG{n}{P₂}\PYG{p}{[}\PYG{n}{ϕ}\PYG{p}{[}\PYG{n}{i}\PYG{p}{,}\PYG{n}{j}\PYG{p}{]} \PYG{o}{\PYGZhy{}} \PYG{n}{ϕ}\PYG{p}{[}\PYG{n}{Iₚ}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{p}{,}\PYG{n}{j}\PYG{p}{]}\PYG{p}{]} \PYG{o}{+} \PYG{n}{P₂}\PYG{p}{[}\PYG{n}{ϕ}\PYG{p}{[}\PYG{n}{i}\PYG{p}{,}\PYG{n}{j}\PYG{p}{]} \PYG{o}{\PYGZhy{}} \PYG{n}{ϕ}\PYG{p}{[}\PYG{n}{i}\PYG{p}{,}\PYG{n}{Iₙ}\PYG{p}{[}\PYG{n}{j}\PYG{p}{]}\PYG{p}{]}\PYG{p}{]} \PYG{o}{+} \PYG{n}{P₂}\PYG{p}{[}\PYG{n}{ϕ}\PYG{p}{[}\PYG{n}{i}\PYG{p}{,}\PYG{n}{j}\PYG{p}{]} \PYG{o}{\PYGZhy{}} \PYG{n}{ϕ}\PYG{p}{[}\PYG{n}{i}\PYG{p}{,}\PYG{n}{Iₚ}\PYG{p}{[}\PYG{n}{j}\PYG{p}{]}\PYG{p}{]}\PYG{p}{]}\PYG{p}{)} \PYG{o}{\PYGZhy{}} \PYG{n}{E}\PYG{o}{\PYGZca{}}\PYG{l+m+mi}{2} \PYG{o}{*} \PYG{n}{P₂}\PYG{p}{[}\PYG{l+m+mi}{90}\PYG{o}{\PYGZhy{}}\PYG{n}{ϕ}\PYG{p}{[}\PYG{n}{i}\PYG{p}{,}\PYG{n}{j}\PYG{p}{]}\PYG{p}{]}
+
+            \PYG{n+nd}{@inbounds} \PYG{n}{U\PYGZus{}new}\PYG{o}{::}\PYG{k+kt}{Float64} \PYG{o}{=} \PYG{o}{\PYGZhy{}}\PYG{n}{ξ} \PYG{o}{*} \PYG{p}{(}\PYG{n}{P₂}\PYG{p}{[}\PYG{n}{ϕ\PYGZus{}new} \PYG{o}{\PYGZhy{}} \PYG{n}{ϕ}\PYG{p}{[}\PYG{n}{Iₙ}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{p}{,}\PYG{n}{j}\PYG{p}{]}\PYG{p}{]} \PYG{o}{+} \PYG{n}{P₂}\PYG{p}{[}\PYG{n}{ϕ\PYGZus{}new} \PYG{o}{\PYGZhy{}} \PYG{n}{ϕ}\PYG{p}{[}\PYG{n}{Iₚ}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{p}{,}\PYG{n}{j}\PYG{p}{]}\PYG{p}{]} \PYG{o}{+} \PYG{n}{P₂}\PYG{p}{[}\PYG{n}{ϕ\PYGZus{}new} \PYG{o}{\PYGZhy{}} \PYG{n}{ϕ}\PYG{p}{[}\PYG{n}{i}\PYG{p}{,}\PYG{n}{Iₙ}\PYG{p}{[}\PYG{n}{j}\PYG{p}{]}\PYG{p}{]}\PYG{p}{]} \PYG{o}{+} \PYG{n}{P₂}\PYG{p}{[}\PYG{n}{ϕ\PYGZus{}new} \PYG{o}{\PYGZhy{}} \PYG{n}{ϕ}\PYG{p}{[}\PYG{n}{i}\PYG{p}{,}\PYG{n}{Iₚ}\PYG{p}{[}\PYG{n}{j}\PYG{p}{]}\PYG{p}{]}\PYG{p}{]}\PYG{p}{)} \PYG{o}{\PYGZhy{}} \PYG{n}{E}\PYG{o}{\PYGZca{}}\PYG{l+m+mi}{2} \PYG{o}{*} \PYG{n}{P₂}\PYG{p}{[}\PYG{l+m+mi}{90}\PYG{o}{\PYGZhy{}}\PYG{n}{ϕ\PYGZus{}new}\PYG{p}{]}
+
+            \PYG{n}{ΔU}\PYG{o}{::}\PYG{k+kt}{Float64} \PYG{o}{=} \PYG{n}{U\PYGZus{}new} \PYG{o}{\PYGZhy{}} \PYG{n}{U\PYGZus{}old}
+            \PYG{k}{if} \PYG{n}{ΔU} \PYG{o}{\PYGZlt{}} \PYG{l+m+mi}{0}  \PYG{n}{rand}\PYG{p}{(}\PYG{p}{)} \PYG{o}{≤} \PYG{n}{exp}\PYG{p}{(}\PYG{o}{\PYGZhy{}}\PYG{n}{ΔU}\PYG{p}{)}
+                \PYG{n+nd}{@inbounds} \PYG{n}{ϕ}\PYG{p}{[}\PYG{n}{i}\PYG{p}{,}\PYG{n}{j}\PYG{p}{]} \PYG{o}{=} \PYG{n}{ϕ\PYGZus{}new}
+            \PYG{k}{end}
+        \PYG{k}{end}
+        \PYG{k}{if} \PYG{n}{k} \PYG{o}{\PYGZgt{}} \PYG{n}{skipfirst} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{n}{k}\PYG{o}{\PYGZpc{}}\PYG{n}{probe\PYGZus{}every} \PYG{o}{==} \PYG{l+m+mi}{0}
+            \PYG{n}{cos2\PYGZus{}profile} \PYG{o}{+=} \PYG{n}{mean}\PYG{p}{(}\PYG{n}{x} \PYG{o}{\PYGZhy{}}\PYG{o}{\PYGZgt{}} \PYG{n}{cosd}\PYG{p}{(}\PYG{n}{x}\PYG{p}{)}\PYG{o}{\PYGZca{}}\PYG{l+m+mi}{2}\PYG{p}{,} \PYG{n}{ϕ}\PYG{p}{,} \PYG{n}{dims}\PYG{o}{=}\PYG{l+m+mi}{2}\PYG{p}{)}
+        \PYG{k}{end}
+    \PYG{k}{end}
+    \PYG{k}{return} \PYG{n}{cos2\PYGZus{}profile} \PYG{o}{./} \PYG{p}{(}\PYG{p}{(}\PYG{n}{MCS}\PYG{o}{\PYGZhy{}}\PYG{n}{skipfirst}\PYG{p}{)}\PYG{o}{÷}\PYG{n}{probe\PYGZus{}every}\PYG{p}{)}
+\PYG{k}{end}
+
+\PYG{k}{function} \PYG{n}{run\PYGZus{}nlc}\PYG{p}{(}\PYG{n}{Es}\PYG{p}{)}
+    \PYG{n}{result} \PYG{o}{=} \PYG{k+kt}{Dict}\PYG{p}{\PYGZob{}}\PYG{k+kt}{Float64}\PYG{p}{,}\PYG{k+kt}{Float64}\PYG{p}{\PYGZcb{}}\PYG{p}{(}\PYG{p}{)}
+    \PYG{n}{Threads}\PYG{o}{.}\PYG{n+nd}{@threads} \PYG{k}{for} \PYG{n}{E} \PYG{o}{∈} \PYG{n}{Es}
+        \PYG{n}{result}\PYG{p}{[}\PYG{n}{E}\PYG{p}{]} \PYG{o}{=} \PYG{n+nd}{@time} \PYG{n}{nlc}\PYG{p}{(}\PYG{n}{E}\PYG{p}{)}
+    \PYG{k}{end}
+    \PYG{k}{return} \PYG{n}{result}
+\PYG{k}{end}
+
+\PYG{n}{Es} \PYG{o}{=} \PYG{l+m+mi}{0}\PYG{o}{:}\PYG{l+m+mf}{0.001}\PYG{o}{:}\PYG{l+m+mf}{3.5}
+
+\PYG{n}{result\PYGZus{}ret} \PYG{o}{=} \PYG{n+nd}{@time} \PYG{n}{run\PYGZus{}nlc}\PYG{p}{(}\PYG{n}{Es}\PYG{p}{)}
+\PYG{n+nd}{@save} \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{r}\PYG{l+s}{e}\PYG{l+s}{s}\PYG{l+s}{u}\PYG{l+s}{l}\PYG{l+s}{t}\PYG{l+s}{\PYGZus{}}\PYG{l+s}{0}\PYG{l+s}{0}\PYG{l+s}{2}\PYG{l+s}{.}\PYG{l+s}{j}\PYG{l+s}{l}\PYG{l+s}{d}\PYG{l+s}{2}\PYG{l+s}{\PYGZdq{}} \PYG{n}{result\PYGZus{}ret}
+\PYG{n+nd}{@load} \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{r}\PYG{l+s}{e}\PYG{l+s}{s}\PYG{l+s}{u}\PYG{l+s}{l}\PYG{l+s}{t}\PYG{l+s}{\PYGZus{}}\PYG{l+s}{0}\PYG{l+s}{0}\PYG{l+s}{2}\PYG{l+s}{.}\PYG{l+s}{j}\PYG{l+s}{l}\PYG{l+s}{d}\PYG{l+s}{2}\PYG{l+s}{\PYGZdq{}} \PYG{n}{result\PYGZus{}ret}
+
+\PYG{c}{\PYGZsh{} serialize(\PYGZdq{}result\PYGZus{}002.jls\PYGZdq{}, result)}
+
+\PYG{n}{scatter}\PYG{p}{(}\PYG{n}{result\PYGZus{}ret}\PYG{p}{,} \PYG{n}{markershape}\PYG{o}{=}\PYG{o}{:}\PYG{n}{auto}\PYG{p}{,} \PYG{n}{markersize}\PYG{o}{=}\PYG{l+m+mi}{2}\PYG{p}{,} \PYG{n}{xlabel}\PYG{o}{=}\PYG{l+s}{\PYGZdq{}}\PYG{l+s+se}{\PYGZbs{}\PYGZdl{}}\PYG{l+s}{E}\PYG{l+s}{\PYGZca{}}\PYG{l+s}{*}\PYG{l+s+se}{\PYGZbs{}\PYGZdl{}}\PYG{l+s}{\PYGZdq{}}\PYG{p}{,} \PYG{n}{ylabel}\PYG{o}{=}\PYG{l+s}{\PYGZdq{}}\PYG{l+s+se}{\PYGZbs{}\PYGZdl{}}\PYG{l+s}{n}\PYG{l+s}{\PYGZus{}}\PYG{l+s}{\PYGZob{}}\PYG{l+s}{e}\PYG{l+s}{f}\PYG{l+s}{f}\PYG{l+s}{\PYGZcb{}}\PYG{l+s+se}{\PYGZbs{}\PYGZdl{}}\PYG{l+s}{\PYGZdq{}}\PYG{p}{,}
+        \PYG{n}{title}\PYG{o}{=}\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{E}\PYG{l+s}{f}\PYG{l+s}{f}\PYG{l+s}{e}\PYG{l+s}{c}\PYG{l+s}{t}\PYG{l+s}{i}\PYG{l+s}{v}\PYG{l+s}{e}\PYG{l+s}{ }\PYG{l+s}{r}\PYG{l+s}{e}\PYG{l+s}{f}\PYG{l+s}{r}\PYG{l+s}{a}\PYG{l+s}{c}\PYG{l+s}{t}\PYG{l+s}{i}\PYG{l+s}{n}\PYG{l+s}{g}\PYG{l+s}{ }\PYG{l+s}{i}\PYG{l+s}{n}\PYG{l+s}{d}\PYG{l+s}{e}\PYG{l+s}{x}\PYG{l+s}{ }\PYG{l+s}{a}\PYG{l+s}{s}\PYG{l+s}{ }\PYG{l+s}{a}\PYG{l+s}{ }\PYG{l+s}{f}\PYG{l+s}{u}\PYG{l+s}{n}\PYG{l+s}{c}\PYG{l+s}{t}\PYG{l+s}{i}\PYG{l+s}{o}\PYG{l+s}{n}\PYG{l+s}{ }\PYG{l+s}{o}\PYG{l+s}{f}\PYG{l+s}{ }\PYG{l+s}{r}\PYG{l+s}{e}\PYG{l+s}{d}\PYG{l+s}{u}\PYG{l+s}{c}\PYG{l+s}{e}\PYG{l+s}{d}\PYG{l+s}{ }\PYG{l+s}{e}\PYG{l+s}{x}\PYG{l+s}{t}\PYG{l+s}{e}\PYG{l+s}{r}\PYG{l+s}{n}\PYG{l+s}{a}\PYG{l+s}{l}\PYG{l+s}{ }\PYG{l+s}{e}\PYG{l+s}{l}\PYG{l+s}{e}\PYG{l+s}{c}\PYG{l+s}{t}\PYG{l+s}{r}\PYG{l+s}{i}\PYG{l+s}{c}\PYG{l+s}{ }\PYG{l+s}{f}\PYG{l+s}{i}\PYG{l+s}{e}\PYG{l+s}{l}\PYG{l+s}{d}\PYG{l+s}{ }\PYG{l+s}{\PYGZhy{}}\PYG{l+s}{ }\PYG{l+s}{o}\PYG{l+s}{r}\PYG{l+s}{d}\PYG{l+s}{e}\PYG{l+s}{r}\PYG{l+s}{e}\PYG{l+s}{d}\PYG{l+s}{ }\PYG{l+s}{i}\PYG{l+s}{n}\PYG{l+s}{i}\PYG{l+s}{t}\PYG{l+s}{i}\PYG{l+s}{a}\PYG{l+s}{l}\PYG{l+s}{ }\PYG{l+s}{c}\PYG{l+s}{o}\PYG{l+s}{n}\PYG{l+s}{d}\PYG{l+s}{i}\PYG{l+s}{t}\PYG{l+s}{i}\PYG{l+s}{o}\PYG{l+s}{n}\PYG{l+s}{s}\PYG{l+s}{\PYGZdq{}}\PYG{p}{,}
+             \PYG{n}{titlefontsize}\PYG{o}{=}\PYG{l+m+mi}{8}\PYG{p}{,} \PYG{n}{markerstrokealpha}\PYG{o}{=}\PYG{l+m+mf}{0.0}\PYG{p}{,} \PYG{n}{label}\PYG{o}{=}\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{L}\PYG{l+s}{=}\PYG{l+s}{2}\PYG{l+s}{0}\PYG{l+s}{\PYGZdq{}}\PYG{p}{,}  \PYG{n}{legend}\PYG{o}{=}\PYG{k+kc}{true}\PYG{p}{)}
+\PYG{n}{lens!}\PYG{p}{(}\PYG{p}{[}\PYG{l+m+mf}{0.65}\PYG{p}{,}\PYG{l+m+mf}{0.8}\PYG{p}{]}\PYG{p}{,}\PYG{p}{[}\PYG{l+m+mf}{1.68}\PYG{p}{,}\PYG{l+m+mf}{1.7}\PYG{p}{]}\PYG{p}{,} \PYG{n}{minorticks}\PYG{o}{=}\PYG{l+m+mi}{5}\PYG{p}{,} \PYG{n}{minorgrid}\PYG{o}{=}\PYG{k+kc}{true}\PYG{p}{,} \PYG{n}{legend}\PYG{o}{=}\PYG{k+kc}{false}\PYG{p}{,} \PYG{n}{inset} \PYG{o}{=} \PYG{p}{(}\PYG{l+m+mi}{1}\PYG{p}{,} \PYG{n}{bbox}\PYG{p}{(}\PYG{l+m+mf}{0.6}\PYG{p}{,} \PYG{l+m+mf}{0.1}\PYG{p}{,} \PYG{l+m+mf}{0.3}\PYG{p}{,} \PYG{l+m+mf}{0.5}\PYG{p}{)}\PYG{p}{)}\PYG{p}{)}
+\PYG{n}{savefig}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{n}\PYG{l+s}{e}\PYG{l+s}{f}\PYG{l+s}{f}\PYG{l+s}{\PYGZus{}}\PYG{l+s}{E}\PYG{l+s}{.}\PYG{l+s}{t}\PYG{l+s}{e}\PYG{l+s}{x}\PYG{l+s}{\PYGZdq{}}\PYG{p}{)}
+
+\PYG{c}{\PYGZsh{}@save \PYGZdq{}result.jld2\PYGZdq{} result\PYGZus{}ret}
+\PYG{c}{\PYGZsh{}@load \PYGZdq{}result.jld2\PYGZdq{}}
+
+\PYG{k}{using} \PYG{n}{Profile}
+\PYG{k}{using} \PYG{n}{StatProfilerHTML}
+
+\PYG{c}{\PYGZsh{} Profile.clear()}
+\PYG{c}{\PYGZsh{} result\PYGZus{}ret = @@profilehtml run\PYGZus{}nlc(Es)}
+
+
+\PYG{n}{cos2\PYGZus{}profile} \PYG{o}{=} \PYG{n}{nlc\PYGZus{}cos2\PYGZus{}profile}\PYG{p}{(}\PYG{l+m+mf}{1.2}\PYG{o}{*}\PYG{l+m+mf}{0.73}\PYG{p}{)}
+\PYG{n}{scatter}\PYG{p}{(}\PYG{n}{cos2\PYGZus{}profile}\PYG{p}{,} \PYG{n}{grid}\PYG{o}{=}\PYG{o}{:}\PYG{n}{both}\PYG{p}{,} \PYG{n}{xticks}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{o}{:}\PYG{l+m+mi}{20}\PYG{p}{,} \PYG{n}{xlabel}\PYG{o}{=}\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{z}\PYG{l+s}{\PYGZdq{}}\PYG{p}{,} \PYG{n}{ylabel}\PYG{o}{=}\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{\PYGZlt{}}\PYG{l+s+se}{\PYGZbs{}\PYGZdl{}}\PYG{l+s+se}{\PYGZbs{}\PYGZbs{}}\PYG{l+s}{c}\PYG{l+s}{o}\PYG{l+s}{s}\PYG{l+s}{\PYGZca{}}\PYG{l+s}{2}\PYG{l+s}{(}\PYG{l+s+se}{\PYGZbs{}\PYGZbs{}}\PYG{l+s}{p}\PYG{l+s}{h}\PYG{l+s}{i}\PYG{l+s}{)}\PYG{l+s+se}{\PYGZbs{}\PYGZdl{}}\PYG{l+s}{\PYGZgt{}}\PYG{l+s}{\PYGZdq{}}\PYG{p}{,} \PYG{n}{legend}\PYG{o}{=}\PYG{o}{:}\PYG{n}{none}\PYG{p}{,}
+        \PYG{n}{title}\PYG{o}{=}\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{E}\PYG{l+s}{n}\PYG{l+s}{s}\PYG{l+s}{e}\PYG{l+s}{m}\PYG{l+s}{b}\PYG{l+s}{l}\PYG{l+s}{e}\PYG{l+s}{ }\PYG{l+s}{a}\PYG{l+s}{v}\PYG{l+s}{e}\PYG{l+s}{r}\PYG{l+s}{a}\PYG{l+s}{g}\PYG{l+s}{e}\PYG{l+s}{d}\PYG{l+s}{ }\PYG{l+s}{p}\PYG{l+s}{a}\PYG{l+s}{r}\PYG{l+s}{t}\PYG{l+s}{i}\PYG{l+s}{c}\PYG{l+s}{l}\PYG{l+s}{e}\PYG{l+s}{s}\PYG{l+s}{\PYGZsq{}}\PYG{l+s}{ }\PYG{l+s}{o}\PYG{l+s}{r}\PYG{l+s}{i}\PYG{l+s}{e}\PYG{l+s}{n}\PYG{l+s}{t}\PYG{l+s}{a}\PYG{l+s}{t}\PYG{l+s}{i}\PYG{l+s}{o}\PYG{l+s}{n}\PYG{l+s}{ }\PYG{l+s}{p}\PYG{l+s}{r}\PYG{l+s}{o}\PYG{l+s}{f}\PYG{l+s}{i}\PYG{l+s}{l}\PYG{l+s}{e}\PYG{l+s}{\PYGZdq{}}\PYG{p}{)}
+\PYG{n}{savefig}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{c}\PYG{l+s}{o}\PYG{l+s}{s}\PYG{l+s}{2}\PYG{l+s}{\PYGZus{}}\PYG{l+s}{p}\PYG{l+s}{r}\PYG{l+s}{o}\PYG{l+s}{f}\PYG{l+s}{i}\PYG{l+s}{l}\PYG{l+s}{e}\PYG{l+s}{.}\PYG{l+s}{t}\PYG{l+s}{e}\PYG{l+s}{x}\PYG{l+s}{\PYGZdq{}}\PYG{p}{)}
+\end{Verbatim}

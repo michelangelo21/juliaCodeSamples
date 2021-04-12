@@ -1,0 +1,3193 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" type="text/css" href="statprofiler.css">
+
+    <title>StatProfilerHTML.jl: /usr/bin/../share/julia/base/./timing.jl</title>
+  </head>
+  <body>
+<div class="report-header">
+  <div class="backlink"><a href="index.html">Report index</a></div>
+  <div class="report-title">StatProfilerHTML.jl report</div>
+  <div class="generated-on">Generated on sob, 23 sty 2021, 23:33:20</div>
+</div>
+
+    <div id="body-content">
+      <table>
+        <caption>File source code</caption>
+        <tr>
+          <th>Line</td>
+          <th>Exclusive</th>
+          <th>Inclusive</th>
+          <th>Code</th>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-1"></a>1</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code"># This file is a part of Julia. License is MIT: https://julialang.org/license
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-2"></a>2</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-3"></a>3</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code"># This type must be kept in sync with the C struct in src/gc.h
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-4"></a>4</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">struct GC_Num
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-5"></a>5</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    allocd          ::Int64 # GC internal
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-6"></a>6</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    deferred_alloc  ::Int64 # GC internal
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-7"></a>7</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    freed           ::Int64 # GC internal
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-8"></a>8</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    malloc          ::Int64
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-9"></a>9</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    realloc         ::Int64
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-10"></a>10</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    poolalloc       ::Int64
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-11"></a>11</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    bigalloc        ::Int64
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-12"></a>12</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    freecall        ::Int64
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-13"></a>13</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    total_time      ::Int64
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-14"></a>14</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    total_allocd    ::Int64 # GC internal
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-15"></a>15</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    since_sweep     ::Int64 # GC internal
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-16"></a>16</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    collect         ::Csize_t # GC internal
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-17"></a>17</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    pause           ::Cint
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-18"></a>18</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    full_sweep      ::Cint
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-19"></a>19</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-20"></a>20</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-21"></a>21</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">gc_num() = ccall(:jl_gc_num, GC_Num, ())
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-22"></a>22</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-23"></a>23</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code"># This type is to represent differences in the counters, so fields may be negative
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-24"></a>24</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">struct GC_Diff
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-25"></a>25</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    allocd      ::Int64 # Bytes allocated
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-26"></a>26</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    malloc      ::Int64 # Number of GC aware malloc()
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-27"></a>27</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    realloc     ::Int64 # Number of GC aware realloc()
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-28"></a>28</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    poolalloc   ::Int64 # Number of pool allocation
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-29"></a>29</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    bigalloc    ::Int64 # Number of big (non-pool) allocation
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-30"></a>30</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    freecall    ::Int64 # Number of GC aware free()
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-31"></a>31</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    total_time  ::Int64 # Time spent in garbage collection
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-32"></a>32</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    pause       ::Int64 # Number of GC pauses
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-33"></a>33</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    full_sweep  ::Int64 # Number of GC full collection
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-34"></a>34</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-35"></a>35</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-36"></a>36</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">gc_total_bytes(gc_num::GC_Num) =
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-37"></a>37</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    gc_num.allocd + gc_num.deferred_alloc + gc_num.total_allocd
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-38"></a>38</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-39"></a>39</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">function GC_Diff(new::GC_Num, old::GC_Num)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-40"></a>40</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    # logic from `src/gc.c:jl_gc_total_bytes`
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-41"></a>41</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    old_allocd = gc_total_bytes(old)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-42"></a>42</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    new_allocd = gc_total_bytes(new)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-43"></a>43</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    return GC_Diff(new_allocd - old_allocd,
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-44"></a>44</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                   new.malloc       - old.malloc,
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-45"></a>45</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                   new.realloc      - old.realloc,
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-46"></a>46</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                   new.poolalloc    - old.poolalloc,
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-47"></a>47</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                   new.bigalloc     - old.bigalloc,
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-48"></a>48</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                   new.freecall     - old.freecall,
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-49"></a>49</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                   new.total_time   - old.total_time,
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-50"></a>50</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                   new.pause        - old.pause,
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-51"></a>51</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                   new.full_sweep   - old.full_sweep)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-52"></a>52</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-53"></a>53</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-54"></a>54</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">function gc_alloc_count(diff::GC_Diff)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-55"></a>55</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    diff.malloc + diff.realloc + diff.poolalloc + diff.bigalloc
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-56"></a>56</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-57"></a>57</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-58"></a>58</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-59"></a>59</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code"># total time spend in garbage collection, in nanoseconds
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-60"></a>60</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">gc_time_ns() = ccall(:jl_gc_total_hrtime, UInt64, ())
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-61"></a>61</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-62"></a>62</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-63"></a>63</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    Base.gc_live_bytes()
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-64"></a>64</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-65"></a>65</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">Return the total size (in bytes) of objects currently in memory.
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-66"></a>66</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">This is computed as the total size of live objects after
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-67"></a>67</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">the last garbage collection, plus the number of bytes allocated
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-68"></a>68</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">since then.
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-69"></a>69</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-70"></a>70</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">function gc_live_bytes()
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-71"></a>71</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    num = gc_num()
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-72"></a>72</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    Int(ccall(:jl_gc_live_bytes, Int64, ())) + num.allocd + num.deferred_alloc
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-73"></a>73</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-74"></a>74</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-75"></a>75</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code"># print elapsed time, return expression value
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-76"></a>76</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">const _mem_units = [&quot;byte&quot;, &quot;KiB&quot;, &quot;MiB&quot;, &quot;GiB&quot;, &quot;TiB&quot;, &quot;PiB&quot;]
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-77"></a>77</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">const _cnt_units = [&quot;&quot;, &quot; k&quot;, &quot; M&quot;, &quot; G&quot;, &quot; T&quot;, &quot; P&quot;]
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-78"></a>78</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">function prettyprint_getunits(value, numunits, factor)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-79"></a>79</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    if value == 0 || value == 1
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-80"></a>80</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        return (value, 1)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-81"></a>81</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-82"></a>82</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    unit = ceil(Int, log(value) / log(factor))
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-83"></a>83</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    unit = min(numunits, unit)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-84"></a>84</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    number = value/factor^(unit-1)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-85"></a>85</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    return number, unit
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-86"></a>86</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-87"></a>87</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-88"></a>88</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">function padded_nonzero_print(value, str)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-89"></a>89</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    if value != 0
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-90"></a>90</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        blanks = &quot;                &quot;[1:(18 - length(str))]
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-91"></a>91</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        println(str, &quot;:&quot;, blanks, value)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-92"></a>92</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-93"></a>93</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-94"></a>94</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-95"></a>95</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-96"></a>96</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">function format_bytes(bytes) # also used by InteractiveUtils
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-97"></a>97</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    bytes, mb = prettyprint_getunits(bytes, length(_mem_units), Int64(1024))
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-98"></a>98</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    if mb == 1
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-99"></a>99</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        return string(Int(bytes), &quot; &quot;, _mem_units[mb], bytes==1 ? &quot;&quot; : &quot;s&quot;)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-100"></a>100</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    else
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-101"></a>101</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        return string(Ryu.writefixed(Float64(bytes), 3), &quot; &quot;, _mem_units[mb])
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-102"></a>102</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-103"></a>103</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-104"></a>104</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-105"></a>105</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">function time_print(elapsedtime, bytes=0, gctime=0, allocs=0)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-106"></a>106</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    timestr = Ryu.writefixed(Float64(elapsedtime/1e9), 6)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-107"></a>107</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    length(timestr) &lt; 10 &amp;&amp; print(&quot; &quot;^(10 - length(timestr)))
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-108"></a>108</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    print(timestr, &quot; seconds&quot;)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-109"></a>109</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    if bytes != 0 || allocs != 0
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-110"></a>110</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        allocs, ma = prettyprint_getunits(allocs, length(_cnt_units), Int64(1000))
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-111"></a>111</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        if ma == 1
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-112"></a>112</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            print(&quot; (&quot;, Int(allocs), _cnt_units[ma], allocs==1 ? &quot; allocation: &quot; : &quot; allocations: &quot;)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-113"></a>113</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        else
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-114"></a>114</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            print(&quot; (&quot;, Ryu.writefixed(Float64(allocs), 2), _cnt_units[ma], &quot; allocations: &quot;)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-115"></a>115</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-116"></a>116</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        print(format_bytes(bytes))
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-117"></a>117</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-118"></a>118</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    if gctime &gt; 0
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-119"></a>119</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        print(&quot;, &quot;, Ryu.writefixed(Float64(100*gctime/elapsedtime), 2), &quot;% gc time&quot;)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-120"></a>120</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-121"></a>121</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    if bytes != 0 || allocs != 0
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-122"></a>122</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        print(&quot;)&quot;)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-123"></a>123</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-124"></a>124</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    nothing
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-125"></a>125</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-126"></a>126</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-127"></a>127</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">function timev_print(elapsedtime, diff::GC_Diff)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-128"></a>128</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    allocs = gc_alloc_count(diff)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-129"></a>129</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    time_print(elapsedtime, diff.allocd, diff.total_time, allocs)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-130"></a>130</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    print(&quot;\nelapsed time (ns): $elapsedtime\n&quot;)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-131"></a>131</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    padded_nonzero_print(diff.total_time,   &quot;gc time (ns)&quot;)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-132"></a>132</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    padded_nonzero_print(diff.allocd,       &quot;bytes allocated&quot;)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-133"></a>133</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    padded_nonzero_print(diff.poolalloc,    &quot;pool allocs&quot;)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-134"></a>134</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    padded_nonzero_print(diff.bigalloc,     &quot;non-pool GC allocs&quot;)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-135"></a>135</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    padded_nonzero_print(diff.malloc,       &quot;malloc() calls&quot;)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-136"></a>136</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    padded_nonzero_print(diff.realloc,      &quot;realloc() calls&quot;)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-137"></a>137</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    padded_nonzero_print(diff.freecall,     &quot;free() calls&quot;)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-138"></a>138</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    padded_nonzero_print(diff.pause,        &quot;GC pauses&quot;)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-139"></a>139</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    padded_nonzero_print(diff.full_sweep,   &quot;full collections&quot;)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-140"></a>140</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-141"></a>141</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-142"></a>142</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-143"></a>143</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    @time
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-144"></a>144</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-145"></a>145</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">A macro to execute an expression, printing the time it took to execute, the number of
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-146"></a>146</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">allocations, and the total number of bytes its execution caused to be allocated, before
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-147"></a>147</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">returning the value of the expression.
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-148"></a>148</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-149"></a>149</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">See also [`@timev`](@ref), [`@timed`](@ref), [`@elapsed`](@ref), and
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-150"></a>150</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">[`@allocated`](@ref).
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-151"></a>151</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-152"></a>152</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">!!! note
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-153"></a>153</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    For more serious benchmarking, consider the `@btime` macro from the BenchmarkTools.jl
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-154"></a>154</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    package which among other things evaluates the function multiple times in order to
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-155"></a>155</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    reduce noise.
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-156"></a>156</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-157"></a>157</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">```julia-repl
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-158"></a>158</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">julia&gt; @time rand(10^6);
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-159"></a>159</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">  0.001525 seconds (7 allocations: 7.630 MiB)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-160"></a>160</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-161"></a>161</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">julia&gt; @time begin
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-162"></a>162</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">           sleep(0.3)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-163"></a>163</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">           1+1
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-164"></a>164</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">       end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-165"></a>165</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">  0.301395 seconds (8 allocations: 336 bytes)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-166"></a>166</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">2
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-167"></a>167</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">```
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-168"></a>168</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-169"></a>169</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">macro time(ex)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-170"></a>170</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    quote
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-171"></a>171</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        while false; end # compiler heuristic: compile this block (alter this if the heuristic changes)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-172"></a>172</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        local stats = gc_num()
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-173"></a>173</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        local elapsedtime = time_ns()
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-174"></a>174</td>
+          <td>621 (0.90%)</td>
+          <td>67714 (98.54%)</td>
+          <td>
+            <div class="call-sites">
+              <a name="S-usr-bin-share-julia-base-timing-jl-macro-expansion-174"></a>
+              67714 (98.54%) samples spent in macro expansion<br />
+              621 (100.00%) (ex.),
+              67714 (100.00%) (incl.)
+              when called from
+              macro expansion
+              <a href="nlc-jl-2a0435bb9269851b01f3-line.html#Lnlc-jl-2a0435bb9269851b01f3-line.html-93">line 93</a><br />
+            </div>
+            <div class="callees">
+              67093 (99.08%)
+              samples spent calling
+              <a href="nlc-jl-2a0435bb9269851b01f3-line.html#S-home-michelangelo-source-repos-MonteCarlo2020-nlc-nlc-jl-nlc-51">nlc</a><br />
+            </div>
+            <span class="code">        local val = $(esc(ex))
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-175"></a>175</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        elapsedtime = time_ns() - elapsedtime
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-176"></a>176</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        local diff = GC_Diff(gc_num(), stats)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-177"></a>177</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        time_print(elapsedtime, diff.allocd, diff.total_time,
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-178"></a>178</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                   gc_alloc_count(diff))
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-179"></a>179</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        println()
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-180"></a>180</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        val
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-181"></a>181</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-182"></a>182</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-183"></a>183</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-184"></a>184</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-185"></a>185</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    @timev
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-186"></a>186</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-187"></a>187</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">This is a verbose version of the `@time` macro. It first prints the same information as
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-188"></a>188</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">`@time`, then any non-zero memory allocation counters, and then returns the value of the
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-189"></a>189</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">expression.
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-190"></a>190</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-191"></a>191</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">See also [`@time`](@ref), [`@timed`](@ref), [`@elapsed`](@ref), and
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-192"></a>192</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">[`@allocated`](@ref).
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-193"></a>193</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-194"></a>194</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">```julia-repl
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-195"></a>195</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">julia&gt; @timev rand(10^6);
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-196"></a>196</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">  0.001006 seconds (7 allocations: 7.630 MiB)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-197"></a>197</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">elapsed time (ns): 1005567
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-198"></a>198</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">bytes allocated:   8000256
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-199"></a>199</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">pool allocs:       6
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-200"></a>200</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">malloc() calls:    1
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-201"></a>201</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">```
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-202"></a>202</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-203"></a>203</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">macro timev(ex)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-204"></a>204</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    quote
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-205"></a>205</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        while false; end # compiler heuristic: compile this block (alter this if the heuristic changes)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-206"></a>206</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        local stats = gc_num()
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-207"></a>207</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        local elapsedtime = time_ns()
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-208"></a>208</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        local val = $(esc(ex))
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-209"></a>209</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        elapsedtime = time_ns() - elapsedtime
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-210"></a>210</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        timev_print(elapsedtime, GC_Diff(gc_num(), stats))
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-211"></a>211</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        val
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-212"></a>212</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-213"></a>213</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-214"></a>214</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-215"></a>215</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-216"></a>216</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    @elapsed
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-217"></a>217</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-218"></a>218</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">A macro to evaluate an expression, discarding the resulting value, instead returning the
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-219"></a>219</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">number of seconds it took to execute as a floating-point number.
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-220"></a>220</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-221"></a>221</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">See also [`@time`](@ref), [`@timev`](@ref), [`@timed`](@ref),
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-222"></a>222</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">and [`@allocated`](@ref).
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-223"></a>223</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-224"></a>224</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">```julia-repl
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-225"></a>225</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">julia&gt; @elapsed sleep(0.3)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-226"></a>226</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">0.301391426
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-227"></a>227</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">```
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-228"></a>228</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-229"></a>229</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">macro elapsed(ex)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-230"></a>230</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    quote
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-231"></a>231</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        while false; end # compiler heuristic: compile this block (alter this if the heuristic changes)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-232"></a>232</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        local t0 = time_ns()
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-233"></a>233</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        $(esc(ex))
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-234"></a>234</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        (time_ns() - t0) / 1e9
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-235"></a>235</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-236"></a>236</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-237"></a>237</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-238"></a>238</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code"># total number of bytes allocated so far
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-239"></a>239</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">gc_bytes(b::Ref{Int64}) = ccall(:jl_gc_get_total_bytes, Cvoid, (Ptr{Int64},), b)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-240"></a>240</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code"># NOTE: gc_bytes() is deprecated
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-241"></a>241</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">function gc_bytes()
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-242"></a>242</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    b = Ref{Int64}()
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-243"></a>243</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    gc_bytes(b)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-244"></a>244</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    b[]
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-245"></a>245</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-246"></a>246</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-247"></a>247</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-248"></a>248</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    @allocated
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-249"></a>249</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-250"></a>250</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">A macro to evaluate an expression, discarding the resulting value, instead returning the
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-251"></a>251</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">total number of bytes allocated during evaluation of the expression.
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-252"></a>252</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-253"></a>253</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">See also [`@time`](@ref), [`@timev`](@ref), [`@timed`](@ref),
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-254"></a>254</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">and [`@elapsed`](@ref).
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-255"></a>255</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-256"></a>256</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">```julia-repl
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-257"></a>257</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">julia&gt; @allocated rand(10^6)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-258"></a>258</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">8000080
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-259"></a>259</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">```
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-260"></a>260</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-261"></a>261</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">macro allocated(ex)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-262"></a>262</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    quote
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-263"></a>263</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        while false; end # compiler heuristic: compile this block (alter this if the heuristic changes)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-264"></a>264</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        local b0 = Ref{Int64}(0)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-265"></a>265</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        local b1 = Ref{Int64}(0)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-266"></a>266</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        gc_bytes(b0)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-267"></a>267</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        $(esc(ex))
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-268"></a>268</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        gc_bytes(b1)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-269"></a>269</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        b1[] - b0[]
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-270"></a>270</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-271"></a>271</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-272"></a>272</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-273"></a>273</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-274"></a>274</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    @timed
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-275"></a>275</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-276"></a>276</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">A macro to execute an expression, and return the value of the expression, elapsed time,
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-277"></a>277</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">total bytes allocated, garbage collection time, and an object with various memory allocation
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-278"></a>278</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">counters.
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-279"></a>279</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-280"></a>280</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">See also [`@time`](@ref), [`@timev`](@ref), [`@elapsed`](@ref), and
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-281"></a>281</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">[`@allocated`](@ref).
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-282"></a>282</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-283"></a>283</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">```julia-repl
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-284"></a>284</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">julia&gt; stats = @timed rand(10^6);
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-285"></a>285</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-286"></a>286</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">julia&gt; stats.time
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-287"></a>287</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">0.006634834
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-288"></a>288</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-289"></a>289</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">julia&gt; stats.bytes
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-290"></a>290</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">8000256
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-291"></a>291</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-292"></a>292</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">julia&gt; stats.gctime
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-293"></a>293</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">0.0055765
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-294"></a>294</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-295"></a>295</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">julia&gt; propertynames(stats.gcstats)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-296"></a>296</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">(:allocd, :malloc, :realloc, :poolalloc, :bigalloc, :freecall, :total_time, :pause, :full_sweep)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-297"></a>297</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-298"></a>298</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">julia&gt; stats.gcstats.total_time
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-299"></a>299</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">5576500
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-300"></a>300</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">```
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-301"></a>301</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-302"></a>302</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">!!! compat &quot;Julia 1.5&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-303"></a>303</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    The return type of this macro was changed from `Tuple` to `NamedTuple` in Julia 1.5.
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-304"></a>304</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-305"></a>305</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">macro timed(ex)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-306"></a>306</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    quote
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-307"></a>307</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        while false; end # compiler heuristic: compile this block (alter this if the heuristic changes)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-308"></a>308</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        local stats = gc_num()
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-309"></a>309</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        local elapsedtime = time_ns()
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-310"></a>310</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        local val = $(esc(ex))
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-311"></a>311</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        elapsedtime = time_ns() - elapsedtime
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-312"></a>312</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        local diff = GC_Diff(gc_num(), stats)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-313"></a>313</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        (value=val, time=elapsedtime/1e9, bytes=diff.allocd, gctime=diff.total_time/1e9, gcstats=diff)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-314"></a>314</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Ltiming-jl-36edd83668fb6b8ce5cf-line.html-315"></a>315</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">end
+</span>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </body>
+</html>
