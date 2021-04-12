@@ -1,3 +1,5 @@
+using Profile
+using StatProfilerHTML
 using Statistics
 using OffsetArrays
 using JLD2
@@ -82,8 +84,6 @@ savefig("neff_E.tex")
 #@save "result.jld2" result_ret
 #@load "result.jld2"
 
-using Profile
-using StatProfilerHTML
 
 # Profile.clear()
 # result_ret = @@profilehtml run_nlc(Es)
