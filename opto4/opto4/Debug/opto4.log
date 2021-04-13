@@ -1,0 +1,6 @@
+﻿  MyForm.cpp
+C:\Users\SirFr\source\repos\opto4\opto4\MyForm.h(490,45): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\SirFr\source\repos\opto4\opto4\MyForm.h(511,18): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\SirFr\source\repos\opto4\opto4\MyForm.h(516): warning C4700: uninitialized local variable 'metexval' used
+  MyForm.obj : MSIL module encountered; incremental linking is disabled for MSIL; performing full link
+  opto4.vcxproj -> C:\Users\SirFr\source\repos\opto4\Debug\opto4.exe
